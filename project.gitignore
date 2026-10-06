@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# ML artefacts (auto-generated — run train.py to recreate)
+models/
+
+# Dataset (auto-generated — run generate_data.py to recreate)
+data/
+
+# Auto-generated plots
+static/img/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
