@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}SAPPS{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="brand-icon">🎓</span>
+    <div>
+      <div class="brand-title">SAPPS</div>
+      <div class="brand-sub">Student Academic Performance Prediction System</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/"         class="{% if request.path=='/'          %}active{% endif %}">Dashboard</a></li>
+    <li><a href="/predict"  class="{% if request.path=='/predict'   %}active{% endif %}">Predict</a></li>
+    <li><a href="/insights" class="{% if request.path=='/insights'  %}active{% endif %}">Insights</a></li>
+    <li><a href="/about"    class="{% if request.path=='/about'     %}active{% endif %}">About</a></li>
+  </ul>
+</nav>
+
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <p>IBM BOB College Project &mdash; Student Academic Performance Prediction &amp; Early Intervention System &copy; 2024</p>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

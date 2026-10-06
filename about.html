@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}About — SAPPS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>About This Project</h1>
+  <p class="page-sub">IBM BOB College Project — Academic Year 2024</p>
+</div>
+
+<div class="card">
+  <h2>Project Overview</h2>
+  <p style="margin-bottom:1rem;">
+    <strong>Student Academic Performance Prediction and Early Intervention System (SAPPS)</strong>
+    is a machine learning–powered web application designed to identify academically at-risk students
+    at an early stage and recommend targeted interventions to improve their educational outcomes.
+  </p>
+  <p>
+    The system analyses 20 student features spanning academic history, attendance, wellbeing, and
+    socioeconomic background to classify each student into one of three risk categories:
+    <span class="tag green">Low Risk</span>, <span class="tag yellow">Medium Risk</span>,
+    or <span class="tag red">High Risk</span> — and simultaneously predicts their expected GPA.
+  </p>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h2>📐 Methodology</h2>
+    <ul class="about-list">
+      <li><strong>Dataset:</strong> 2 000 synthetic student records with realistic feature distributions</li>
+      <li><strong>Train/Test Split:</strong> 80% training, 20% testing (stratified)</li>
+      <li><strong>Cross-Validation:</strong> 5-fold stratified CV for unbiased evaluation</li>
+      <li><strong>Models Evaluated:</strong> Logistic Regression, Random Forest, Gradient Boosting, SVM, KNN</li>
+      <li><strong>Model Selection:</strong> Best classifier by test accuracy, auto-persisted with joblib</li>
+      <li><strong>GPA Regression:</strong> Random Forest Regressor evaluated by RMSE and R²</li>
+      <li><strong>Preprocessing:</strong> StandardScaler for all numeric features; ordinal encoding for categoricals</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🛠 Technology Stack</h2>
+    <ul class="about-list">
+      <li><strong>Language:</strong> Python 3.12</li>
+      <li><strong>Web Framework:</strong> Flask 3.0</li>
+      <li><strong>ML Library:</strong> scikit-learn 1.5</li>
+      <li><strong>Data Processing:</strong> pandas, NumPy</li>
+      <li><strong>Visualisation:</strong> Matplotlib, Seaborn, Chart.js</li>
+      <li><strong>Model Persistence:</strong> joblib</li>
+      <li><strong>Frontend:</strong> HTML5, CSS3 (custom), Vanilla JS</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📋 Feature Description</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Feature</th><th>Type</th><th>Description</th><th>Range</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>prev_gpa</td><td>Numeric</td><td>GPA from previous semester</td><td>0.0 – 4.0</td></tr>
+        <tr><td>attendance_pct</td><td>Numeric</td><td>Percentage of classes attended</td><td>0 – 100%</td></tr>
+        <tr><td>study_hours_day</td><td>Numeric</td><td>Average daily self-study hours</td><td>0 – 16 h</td></tr>
+        <tr><td>midterm_score</td><td>Numeric</td><td>Midterm examination score</td><td>0 – 100</td></tr>
+        <tr><td>assignment_avg</td><td>Numeric</td><td>Average assignment score</td><td>0 – 100</td></tr>
+        <tr><td>quiz_avg</td><td>Numeric</td><td>Average quiz score</td><td>0 – 100</td></tr>
+        <tr><td>lab_score</td><td>Numeric</td><td>Lab / practical score</td><td>0 – 100</td></tr>
+        <tr><td>mental_health_score</td><td>Numeric</td><td>Self-reported mental health rating</td><td>1 – 10</td></tr>
+        <tr><td>sleep_hours</td><td>Numeric</td><td>Average nightly sleep duration</td><td>2 – 12 h</td></tr>
+        <tr><td>tutoring_sessions</td><td>Numeric</td><td>Number of tutoring sessions attended</td><td>0 – 20+</td></tr>
+        <tr><td>num_failed_before</td><td>Numeric</td><td>Previously failed course count</td><td>0 – 5</td></tr>
+        <tr><td>distance_km</td><td>Numeric</td><td>Distance from campus</td><td>0 – 80 km</td></tr>
+        <tr><td>gender</td><td>Categorical</td><td>Gender identity</td><td>Male / Female / Other</td></tr>
+        <tr><td>family_income</td><td>Categorical</td><td>Household income level</td><td>Low / Middle / High</td></tr>
+        <tr><td>parent_education</td><td>Categorical</td><td>Highest parental qualification</td><td>No Degree → Postgrad</td></tr>
+        <tr><td>first_gen_student</td><td>Binary</td><td>First generation college student</td><td>0 / 1</td></tr>
+        <tr><td>extracurricular</td><td>Binary</td><td>Participates in extracurricular activities</td><td>0 / 1</td></tr>
+        <tr><td>part_time_job</td><td>Binary</td><td>Has a part-time job during semester</td><td>0 / 1</td></tr>
+        <tr><td>internet_access</td><td>Binary</td><td>Reliable home internet access</td><td>0 / 1</td></tr>
+        <tr><td>age</td><td>Numeric</td><td>Student age</td><td>17 – 24</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>⚠️ Ethical Considerations</h2>
+  <ul class="about-list">
+    <li>Predictions are decision-support tools — final decisions must involve qualified human advisors.</li>
+    <li>Socioeconomic features are included to capture disadvantage and trigger additional support, not penalise students.</li>
+    <li>Model is trained on synthetic data; real deployment would require IRB-approved data collection and bias auditing.</li>
+    <li>Risk labels should never be shared with students without counsellor guidance.</li>
+    <li>Regular retraining is essential to avoid concept drift as student demographics change.</li>
+  </ul>
+</div>
+{% endblock %}

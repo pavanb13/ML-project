@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Model Insights — SAPPS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Model Insights &amp; Evaluation</h1>
+  <p class="page-sub">Detailed performance metrics, confusion matrix, and feature analysis for the trained ML models.</p>
+</div>
+
+<!-- Best model banner -->
+<div class="best-model-banner">
+  <div>
+    <div class="bm-label">Best Performing Model</div>
+    <div class="bm-name">{{ meta.best_model }}</div>
+  </div>
+  <div class="bm-metrics">
+    <div class="bm-metric">
+      <div class="bm-val">{{ meta.best_accuracy }}%</div>
+      <div class="bm-key">Test Accuracy</div>
+    </div>
+    <div class="bm-metric">
+      <div class="bm-val">{{ meta.gpa_r2 }}</div>
+      <div class="bm-key">GPA Regressor R²</div>
+    </div>
+    <div class="bm-metric">
+      <div class="bm-val">{{ meta.gpa_rmse }}</div>
+      <div class="bm-key">GPA RMSE</div>
+    </div>
+  </div>
+</div>
+
+<!-- Model comparison table -->
+<div class="card">
+  <h2>All Models — Performance Summary</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Test Accuracy (%)</th>
+          <th>CV Mean (%)</th>
+          <th>CV Std (%)</th>
+          <th>Precision (Macro)</th>
+          <th>Recall (Macro)</th>
+          <th>F1 (Macro)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for name, res in meta.results.items() %}
+        <tr {% if name == meta.best_model %}class="best-row"{% endif %}>
+          <td><strong>{{ name }}</strong>{% if name == meta.best_model %} <span class="badge-best">Best</span>{% endif %}</td>
+          <td>{{ res.accuracy }}</td>
+          <td>{{ res.cv_mean }}</td>
+          <td>{{ res.cv_std }}</td>
+          <td>{{ "%.2f"|format(res.report["macro avg"]["precision"] * 100) }}</td>
+          <td>{{ "%.2f"|format(res.report["macro avg"]["recall"]    * 100) }}</td>
+          <td>{{ "%.2f"|format(res.report["macro avg"]["f1-score"]  * 100) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Charts: confusion matrix + feature importance -->
+<div class="two-col">
+  <div class="card">
+    <h2>Confusion Matrix</h2>
+    <img src="{{ url_for('static', filename='img/confusion_matrix.png') }}"
+         alt="Confusion Matrix" class="insight-img" />
+  </div>
+  <div class="card">
+    <h2>Top Feature Importances</h2>
+    <img src="{{ url_for('static', filename='img/feature_importance.png') }}"
+         alt="Feature Importance" class="insight-img" />
+  </div>
+</div>
+
+<!-- Model comparison chart image -->
+<div class="card">
+  <h2>Model Comparison Chart</h2>
+  <img src="{{ url_for('static', filename='img/model_comparison.png') }}"
+       alt="Model Comparison" class="insight-img-wide" />
+</div>
+
+<!-- Risk distribution chart -->
+<div class="card">
+  <h2>Dataset Risk Distribution</h2>
+  <img src="{{ url_for('static', filename='img/risk_distribution.png') }}"
+       alt="Risk Distribution" style="max-width:480px; display:block; margin:0 auto;" />
+</div>
+
+<!-- Feature list -->
+<div class="card">
+  <h2>Feature Engineering</h2>
+  <div class="feature-grid">
+    {% set categories = [
+      ("📊 Academic", ["prev_gpa","midterm_score","assignment_avg","quiz_avg","lab_score","num_failed_before"]),
+      ("🏫 Engagement", ["attendance_pct","study_hours_day","tutoring_sessions","extracurricular"]),
+      ("🌿 Wellbeing",  ["mental_health_score","sleep_hours","part_time_job","internet_access"]),
+      ("👤 Background", ["age","gender_enc","family_income_enc","parent_education_enc","first_gen_student","distance_km"]),
+    ] %}
+    {% for cat, feats in categories %}
+    <div class="feat-cat">
+      <h4>{{ cat }}</h4>
+      <ul>{% for f in feats %}<li>{{ f }}</li>{% endfor %}</ul>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

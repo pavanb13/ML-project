@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SAPPS{% endblock %}
+
+{% block content %}
+<!-- Hero ------------------------------------------------------------------>
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-badge">IBM BOB College Project</span>
+    <h1>Student Academic Performance<br>Prediction &amp; Early Intervention</h1>
+    <p class="hero-sub">
+      A machine learning system that identifies at-risk students early and recommends
+      personalised interventions to improve academic outcomes.
+    </p>
+    <div class="hero-actions">
+      <a href="/predict" class="btn-primary">Predict Student Risk →</a>
+      <a href="/insights" class="btn-outline">View Model Insights</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-value">{{ meta.dataset_size }}</div>
+      <div class="hs-label">Training Records</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-value">20</div>
+      <div class="hs-label">Features</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-value">{{ meta.best_accuracy }}%</div>
+      <div class="hs-label">Best Accuracy</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-value">5</div>
+      <div class="hs-label">ML Models</div>
+    </div>
+  </div>
+</section>
+
+<!-- Summary cards --------------------------------------------------------->
+<div class="cards-row">
+  <div class="summary-card border-green">
+    <div class="sc-icon">✅</div>
+    <div class="sc-body">
+      <div class="sc-value green">{{ meta.class_distribution.get('Low Risk', 0) }}</div>
+      <div class="sc-label">Low Risk Students</div>
+    </div>
+  </div>
+  <div class="summary-card border-yellow">
+    <div class="sc-icon">⚠️</div>
+    <div class="sc-body">
+      <div class="sc-value yellow">{{ meta.class_distribution.get('Medium Risk', 0) }}</div>
+      <div class="sc-label">Medium Risk Students</div>
+    </div>
+  </div>
+  <div class="summary-card border-red">
+    <div class="sc-icon">🚨</div>
+    <div class="sc-body">
+      <div class="sc-value red">{{ meta.class_distribution.get('High Risk', 0) }}</div>
+      <div class="sc-label">High Risk Students</div>
+    </div>
+  </div>
+  <div class="summary-card border-blue">
+    <div class="sc-icon">🏆</div>
+    <div class="sc-body">
+      <div class="sc-value blue">{{ meta.best_model.split()[0] }}</div>
+      <div class="sc-label">Best Model</div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts row ------------------------------------------------------------>
+<div class="two-col">
+  <div class="card">
+    <h2>Risk Category Distribution</h2>
+    <div class="chart-wrap-sm">
+      <canvas id="riskChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Model Accuracy Comparison</h2>
+    <div class="chart-wrap-sm">
+      <canvas id="modelChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- How it works ---------------------------------------------------------->
+<div class="card">
+  <h2>How It Works</h2>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="ps-num">1</div>
+      <div class="ps-body">
+        <h4>Data Collection</h4>
+        <p>Collects 20 student features: attendance, grades, mental health, socioeconomic background &amp; more.</p>
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="ps-num">2</div>
+      <div class="ps-body">
+        <h4>ML Training</h4>
+        <p>5 classifiers trained and evaluated via 5-fold cross-validation. Best model auto-selected.</p>
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="ps-num">3</div>
+      <div class="ps-body">
+        <h4>Prediction</h4>
+        <p>Risk category (Low / Medium / High) and predicted GPA generated instantly for any student.</p>
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="ps-num">4</div>
+      <div class="ps-body">
+        <h4>Intervention</h4>
+        <p>Personalised recommendations surfaced automatically based on the student's specific risk factors.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const META = {{ meta | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
